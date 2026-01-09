@@ -5,32 +5,48 @@ import { processRouter } from "./routes/process.js";
 
 const app = express();
 
+/**
+ * CORS
+ * Since frontend & backend are on SAME DOMAIN,
+ * this is technically optional — but safe to keep.
+ */
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:5173"
+    origin: process.env.CORS_ORIGIN || "https://plaumassignment.vercel.app",
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"]
   })
 );
+
+// Body parser
 app.use(express.json({ limit: "2mb" }));
 
+// Health check
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok" });
+  res.status(200).json({ status: "ok" });
 });
 
+// API routes
 app.use("/api", processRouter);
 
+// Global error handler (VERY important on Vercel)
 app.use((err, _req, res, _next) => {
+  console.error("Backend error:", err);
+
   const status =
     Number(err?.status) ||
     (err?.code === "LIMIT_FILE_SIZE" ? 413 : 0) ||
     (err?.code === "LIMIT_UNEXPECTED_FILE" ? 400 : 0) ||
     500;
+
   res.status(status).json({
     status: "error",
     message: err?.message || "Internal server error"
   });
 });
 
-const port = Number(process.env.PORT || 5000);
-app.listen(port, () => {
-  console.log(`Backend listening on http://localhost:${port}`);
-});
+/**
+ * 🚫 DO NOT USE app.listen() ON VERCEL
+ * ✅ EXPORT THE APP
+ */
+export default app;
