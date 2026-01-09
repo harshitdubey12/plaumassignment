@@ -1,0 +1,24 @@
+{
+  "name": "appointment-assistant-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "lint": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "@google/genai": "^0.9.0",
+    "chrono-node": "^2.7.7",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "sharp": "^0.33.5",
+    "tesseract.js": "^5.1.0",
+    "zod": "^3.23.8"
+  }
+}
