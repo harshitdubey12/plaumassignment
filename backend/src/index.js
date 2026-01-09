@@ -5,11 +5,7 @@ import { processRouter } from "./routes/process.js";
 
 const app = express();
 
-/**
- * CORS
- * Since frontend & backend are on SAME DOMAIN,
- * this is technically optional — but safe to keep.
- */
+
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN || "https://plaumassignment.vercel.app",
@@ -45,8 +41,5 @@ app.use((err, _req, res, _next) => {
   });
 });
 
-/**
- * 🚫 DO NOT USE app.listen() ON VERCEL
- * ✅ EXPORT THE APP
- */
+
 export default app;
